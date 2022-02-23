@@ -149,7 +149,7 @@ void	call_filters(void)
 	while (black >= 0)
 	{
 		filter_black(arr, letter, index);
-		black--;
+		black--;												//the only difference?
 	}
 	print_list(arr);
 }
