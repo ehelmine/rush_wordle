@@ -1,89 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
-
-void	print_list(char **array)
-{
-	int i;
-	int x;
-
-	i = 0;
-	x = 0;
-	while (array[i] != NULL)
-	{
-		if (array[i][0] != '\0')
-			printf("%s\n", array[i]);
-		i++;
-	}
-}
-
-void	filter_black(char **array, char letter)
-{
-	int i;
-	int ii;
-
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][0] != '\0')
-		{
-			for (ii = 0; ii < 5; ii++)
-			{
-				if (array[i][ii] == letter)
-				{
-					memset(array[i], 0, 5);
-					break ;
-				}
-			}
-		}
-	}
-
-}
-
-void	filter_yellow(char **array, char letter, int index)
-{
-	// checks if given letter is somewhere in the word
-	// if it is there BUT it is in the given index -> it is not the right word -> memset
-	// if it is not there -> memset
-	// if it is there and it is not in the given index -> we i++;
-
-	int i;
-	int ii;
-	
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][0] != '\0')
-		{
-			for (ii = 0; ii < 5; ii++)
-			{
-				if (array[i][ii] == letter)
-				{
-					if (ii == index)
-					{
-						memset(array[i], 0, 5);
-						break ;
-					}
-				}
-			}
-		}
-	}
-}
-
-int	filter_green(char **array, char letter, int index)
-{
-	// checks if given letter is in the right place
-
-	int i;
-	int x;
-
-	x = 0;
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][index] != letter)
-			memset(array[i], 0, 5);
-	}
-	return (x);
-}
 
 char	**word_list(void)
 {
@@ -128,33 +45,144 @@ char	**word_list(void)
 	return (alloc_arr);
 }
 
-void	call_filters(void)
+float	*get_value(char str[5])
 {
-	int green;
-	int yellow;
-	int black;
+	int i = 0;
+	float *value;
+
+	value = (float *)malloc(sizeof(float) * 1);
+	while (i < 5)
+	{
+		if (str[i] == 'a')
+			value[0] += 25;
+//			value[0] += 43.31;
+		else if (str[i] == 'b')
+			value[0] += 10;
+//			value[0] += 10.56;
+		else if (str[i] == 'c')
+			value[0] += 17;
+//			value[0] += 23.13;
+		else if (str[i] == 'd')
+			value[0] += 15;
+//			value[0] += 17.25;
+		else if (str[i] == 'e')
+			value[0] += 26;
+//			value[0] += 56.88;
+		else if (str[i] == 'f')
+			value[0] += 9;
+//			value[0] += 9.24;
+		else if (str[i] == 'g')
+			value[0] += 11;
+//			value[0] += 12.59;
+		else if (str[i] == 'h')
+			value[0] += 12;
+//			value[0] += 15.31;
+		else if (str[i] == 'i')
+			value[0] += 23;
+//			value[0] += 38.45;
+		else if (str[i] == 'j')
+			value[0] += 2;
+//			value[0] += 1.00;
+		else if (str[i] == 'k')
+			value[0] += 6;
+//			value[0] += 5.61;
+		else if (str[i] == 'l')
+			value[0] += 18;
+//			value[0] += 27.98;
+		else if (str[i] == 'm')
+			value[0] += 13;
+//			value[0] += 15.36;
+		else if (str[i] == 'n')
+			value[0] += 20;
+//			value[0] += 33.92;
+		else if (str[i] == 'o')
+			value[0] += 22;
+//			value[0] += 36.51;
+		else if (str[i] == 'p')
+			value[0] += 14;
+//			value[0] += 16.14;
+		else if (str[i] == 'q')
+			value[0] += 1;
+//			value[0] += 1.00;
+		else if (str[i] == 'r')
+			value[0] += 24;
+//			value[0] += 38.64;
+		else if (str[i] == 's')
+			value[0] += 19;
+//			value[0] += 29.23;
+		else if (str[i] == 't')
+			value[0] += 21;
+//			value[0] += 35.43;
+		else if (str[i] == 'u')
+			value[0] += 16;
+//			value[0] += 18.51;
+		else if (str[i] == 'v')
+			value[0] += 5;
+//			value[0] += 5.13;
+		else if (str[i] == 'w')
+			value[0] += 7;
+//			value[0] += 6.57;
+		else if (str[i] == 'x')
+			value[0] += 4;
+//			value[0] += 1.48;
+		else if (str[i] == 'y')
+			value[0] += 8;
+//			value[0] += 9.06;
+		else if (str[i] == 'z')
+			value[0] += 3;
+//			value[0] += 1.39;
+		i++;
+	}
+	return (value);
+}
+	/*
+E	11.1607%	56.88	M	3.0129%	15.36
+A	8.4966%		43.31	H	3.0034%	15.31
+R	7.5809%		38.64	G	2.4705%	12.59
+I	7.5448%		38.45	B	2.0720%	10.56
+O	7.1635%		36.51	F	1.8121%	9.24
+T	6.9509%		35.43	Y	1.7779%	9.06
+N	6.6544%		33.92	W	1.2899%	6.57
+S	5.7351%		29.23	K	1.1016%	5.61
+L	5.4893%		27.98	V	1.0074%	5.13
+C	4.5388%		23.13	X	0.2902%	1.48
+U	3.6308%		18.51	Z	0.2722%	1.39
+D	3.3844%		17.25	J	0.1965%	1.00
+P	3.1671%		16.14	Q	0.1962%	(1)*/
+
+void	count_values(int loop, char **arr)
+{
+	int i = 0;
+	int x = 0;
+	float	**value_arr;
+	float big;
+	char *ptr;
+
+	value_arr = (float **)malloc(sizeof(float *) * 2308);
+	while (arr[x] != NULL)
+	{
+		value_arr[x] = get_value(arr[x]);
+		if (x == 0)
+			big = value_arr[x][0];
+		else if (x > 0 && value_arr[x][0] > big)
+		{
+			big = value_arr[x][0];
+			ptr = arr[x];
+		}
+		printf("%f\n", value_arr[x][0]);
+		x++;
+	}
+	printf("biggest %f ptr %s\n", big, ptr);
+}
+
+int main(void)
+{
+	int loops = 0;
 	char **arr;
 
 	arr = word_list();
-	while (green >= 0)
-	{
-		filter_green(arr, letter, index);
-		green--;
-	}
-	while (yellow >= 0)
-	{
-		filter_yellow(arr, letter, index);
-		yellow--;
-	}
-	while (black >= 0)
-	{
-		filter_black(arr, letter, index);
-	}
-	print_list(arr);
-}
-
-int	main(void)
-{
-	call_filters();
-	return (0);
+//	while (loops < 6)
+//	{
+		count_values(loops, arr);
+//	}
 }
