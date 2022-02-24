@@ -1,19 +1,11 @@
 
 #include "wordle.h"
 
-float	*get_value(char *str)
+float	*get_value(char *str, int *check)
 {
 	int i = 0;
-	int	*check;
 	float *value;
 
-	check = (int *)malloc(sizeof(int) * 26);
-	if (!check)
-	{
-		printf("Malloc fail\n");
-		exit (1);
-	}
-	memset(check, 0, 26);
 	value = (float *)malloc(sizeof(float) * 1);
 	if (!value)
 	{
@@ -204,7 +196,15 @@ void	count_values(int loop, t_wordle *data)
 	int x = 0;
 	float big;
 	char *ptr;
+	int *check;
 
+	check = (int *)malloc(sizeof(int) * 26);
+	if (!check)
+	{
+		printf("Malloc fail\n");
+		exit (1);
+	}
+	memset(check, 0, 26);
 	data->value_arr = (float **)malloc(sizeof(float *) * 2308);
 	if (!data->value_arr)
 	{
@@ -213,7 +213,7 @@ void	count_values(int loop, t_wordle *data)
 	}
 	while (data->arr[x] != NULL)
 	{
-		data->value_arr[x] = get_value(data->arr[x]);
+		data->value_arr[x] = get_value(data->arr[x], check);
 		if (x == 0)
 			big = data->value_arr[x][0];
 		else if (x > 0 && data->value_arr[x][0] > big)
@@ -221,8 +221,13 @@ void	count_values(int loop, t_wordle *data)
 			big = data->value_arr[x][0];
 			ptr = data->arr[x];
 		}
-//		printf("%s %f\n", data->arr[x], data->value_arr[x][0]);
+		memset(check, 0, 26);
 		x++;
+	}
+	if (check)
+	{
+		free(check);
+		check = NULL;
 	}
 	printf("\nGIVE AS INPUT: %s\n\n", ptr);
 }
