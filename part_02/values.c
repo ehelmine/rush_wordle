@@ -198,6 +198,7 @@ void	count_values(int loop, t_wordle *data)
 	char *ptr;
 	int *check;
 
+	check = NULL;
 	check = (int *)malloc(sizeof(int) * 26);
 	if (!check)
 	{
