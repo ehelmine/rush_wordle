@@ -1,7 +1,6 @@
 #include "wordle.h"
 
-void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **array, \
-		int green_index, char letter)
+static void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **array, int green_index, char letter)
 {
 	// remove all the words that have the letter anywhere else except in the
 	// green index
@@ -23,7 +22,7 @@ void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **ar
 	}
 }
 
-void	remove_words_black_letter_in_spesific_index(char **array, char letter, int index)
+static void	remove_words_black_letter_in_spesific_index(char **array, char letter, int index)
 {
 	// remove all the words that have black letter in spesific index
 	int i;
@@ -41,7 +40,7 @@ void	remove_words_black_letter_in_spesific_index(char **array, char letter, int 
 	}
 }
 
-void	remove_words_that_have_black_letter(char **array, char letter)
+static void	remove_words_that_have_black_letter(char **array, char letter)
 {
 	// remove all the words that have black letter anywhere in it
 	int i;
@@ -98,7 +97,7 @@ void	black_filter(t_wordle *data)
 			{
 				// if we didn't find the black letter in the yellow list, we come here
 				int k = 0;
-				while (data->green_buf[y] != '\0' && data->green_buf[k] != data->black_buf[i])
+				while (data->green_buf[k] != '\0' && data->green_buf[k] != data->black_buf[i])
 					k++;
 				remove_words_that_have_letter_anywhere_else_except_in_green_index(data->arr, k, data->black_buf[i]);
 			}

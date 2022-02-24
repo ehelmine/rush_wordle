@@ -21,6 +21,9 @@ typedef struct s_wordle
 	int		num_yellow;
 }				t_wordle;
 
+char	**word_list(void);
+void	call_filters(t_wordle *data);
 void	black_filter(t_wordle *data);
+void	print_list(char **array);
 
 #endif

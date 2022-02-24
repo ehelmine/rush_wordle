@@ -1,6 +1,6 @@
 #include "wordle.h"
 
-void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **array, \
+static void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **array,
 		int green_index, char letter, float **val_arr)
 {
 	// remove all the words that have the letter anywhere else except in the
@@ -25,7 +25,7 @@ void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **ar
 	}
 }
 
-void	remove_words_black_letter_in_spesific_index(char **array, char letter, int index,
+static void	remove_words_black_letter_in_spesific_index(char **array, char letter, int index,
 		float **val_arr)
 {
 	// remove all the words that have black letter in spesific index
@@ -44,7 +44,7 @@ void	remove_words_black_letter_in_spesific_index(char **array, char letter, int 
 	}
 }
 
-void	remove_words_that_have_black_letter(char **array, char letter, float **val_arr)
+static void	remove_words_that_have_black_letter(char **array, char letter, float **val_arr)
 {
 	// remove all the words that have black letter anywhere in it
 	int i;

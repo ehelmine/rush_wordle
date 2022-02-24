@@ -4,7 +4,14 @@
 #include <time.h>
 #include <unistd.h>
 
-void	ft_strdel(char **as)
+static int	ft_isalpha(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	return (0);
+}
+
+static void	ft_strdel(char **as)
 {
 	if (as != NULL)
 	{
@@ -13,7 +20,14 @@ void	ft_strdel(char **as)
 	}
 }
 
-int	ft_strclen(char *str, int c)
+static int	ft_tolower(int c)
+{
+	if (c >= 65 && c <= 90)
+		return (c + 32);
+	return (c);
+}
+
+static int	ft_strclen(char *str, int c)
 {
 	int	i;
 
@@ -27,7 +41,7 @@ int	ft_strclen(char *str, int c)
 	return (0);
 }
 
-char	**word_list(void)
+static char	**word_list(void)
 {
 	char *array[2309] = {"cigar","rebut","sissy","humph","awake",
 	"blush","focal","evade","naval","serve","heath","dwarf","model",
@@ -60,10 +74,20 @@ char	**word_list(void)
 	int i;
 
 	alloc_arr = (char **)malloc(sizeof(char *) * (2309));
+	if (!alloc_arr)
+	{
+		printf("Malloc fail\n");
+		exit (1);
+	}
 	i = 0;
 	while (i < 2308)
 	{
 		alloc_arr[i] = strdup(array[i]);
+		if (!alloc_arr[i])
+		{
+			printf("Malloc fail\n");
+			exit (1);
+		}
 		i++;
 	}
 	alloc_arr[i] = NULL;
@@ -75,7 +99,6 @@ int main()
 	char	input[7];
 	char	*random_correct_answer;
 
-	//random_correct_answer = (char *)malloc(sizeof(char) * 7);
 	srand(time(NULL));
 	random_correct_answer = strdup(word_list()[rand() % 2309]);
 	if (!random_correct_answer)
@@ -83,11 +106,7 @@ int main()
 		printf("strdup fail\n");
 		exit (1);
 	}
-	
-	//printf("%s\n", random_correct_answer); //for show
-
- 	printf("\t\t\t\t\033[0;34mW\033[0;35mO\033[0;36mR\033[0;31mD\033[0;34mL\033[0;35mE\033[0m,\n\n \t\tguess the five letter word! (usage: write a five letter word in lower case letters.)\n \t\t-\x1b[1;32mgreen\033[0m letter, that means that the letter is in the right place.\n \t\t-\x1b[1;33myellow\033[0m letter, that means the letter is somewhere in the word but not in the place that you tried.\n \t\t-\x1b[0;37mdark\033[0m letter, that means that the letter not in the word you are looking for.\n");
-
+ 	printf("\t\t\t\t\033[1;34mW\033[1;35mO\033[1;36mR\033[1;31mD\033[1;34mL\033[1;35mE\033[0m,\n \t\t\tguess the five letter word!\n\n \t\t-\x1b[1;32mgreen\033[0m, that means that the letter is in the right place.\n \t\t-\x1b[1;33myellow\033[0m, that means the letter is somewhere in the word but not in the place that you tried.\n \t\t-\x1b[0;37mdark\033[0m, that means that the letter not in the word you are looking for.\n\n \t\t\t\033[1;36mjust write and press enter.\033[0;37m");
 	char *hold;
 	hold = (char *)malloc(sizeof(char) * 7);
 	if (!hold)
@@ -96,7 +115,6 @@ int main()
 		exit (1);
 	}
 	memset(hold, 0, 7);
-
 	char *temp;
 	temp = strdup(random_correct_answer);
 	if (!temp)
@@ -104,19 +122,37 @@ int main()
 		printf("strdup fail\n");
 		exit (1);
 	}
-
-	int i = 0;
 	int j = 0;
 	printf("%c", '\n');
 	int loop = 6;
 	int x;
-	while (loop--)
+	while (loop)
 	{
+		int i = 0;
 		scanf("\t\t\t\t%s", input);
+		while (input[i])
+		{
+			if (!ft_isalpha(input[i]))
+			{
+				printf("\n\033[0;31mError! Input is not in the alphabet.\033[0;37m\n\n");
+				i = -1;
+				break ;
+			}
+			i++;
+		}
+		if (i == -1)
+			continue ;
+		i = 0;
+		while (input[i])
+		{
+			input[i] = ft_tolower(input[i]);
+			i++;
+		}
+		i = 0;
 		if (strlen(input) != 5)
 		{
-			printf("Error! Input is not five letters.\n");
-			exit(1);
+			printf("\n\033[0;31mError! Input is not five letters.\033[0;37m\n\n");
+			continue ;
 		}
 		while (random_correct_answer[j])
 		{
@@ -136,7 +172,6 @@ int main()
 						{
 							printf("\x1b[1;33m%c\033[0m", input[i] - 32);  //print yellow
 							random_correct_answer[j] = '9';
-							//x = j;
 							break ;
 						}
 						j++;
@@ -148,11 +183,15 @@ int main()
 				i++;
 				j++;
 			}
-			printf("%c", '\n');
-			printf("%c", '\n');
+			printf("%c%c", '\n', '\n');
 		}
 		ft_strdel(&random_correct_answer);
 		random_correct_answer = strdup(temp);
+		if (!random_correct_answer)
+		{
+			printf("strdup fail\n");
+			exit (1);
+		}
 		if (!strcmp(random_correct_answer, hold))
 		{
 			printf("\t\t\t\033[0;34mC\033[0;35mo\033[0;36mn\033[0mg\033[0;35mr\033[0;36ma\033[0;35mt\033[0;34mu\033[0;35ml\033[0;34ma\033[0;36mt\033[0;35mi\033[0;36mo\033[0;34mn\033[0;35ms \033[0;34my\033[0;35mo\033[0;36mu \033[0;35md\033[0mi\033[0;36md \033[0;35mi\033[0;34mt!\033[0m\n\n\n");
@@ -160,11 +199,11 @@ int main()
 		}
 		j = 0;
 		i = 0;
-		if (loop)
-			printf("\t\t\t\tTry again! %d tries left.\n\n", loop);
+		loop--;
+		if (loop > 0)
+			printf("\t\t\tTry again! %d tries left.\n\n", loop);
 		else
-			printf("\t\t\t\tBetter luck next time!\n");
+			printf("\t\t\tBetter luck next time!\n");
 	}
-
-    return 0;
+	return 0;
 }

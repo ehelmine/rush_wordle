@@ -1,7 +1,7 @@
 
 #include "wordle.h"
 
-float	*get_value(char *str, int *check)
+static float	*get_value(char *str, int *check)
 {
 	int i = 0;
 	float *value;
@@ -17,157 +17,131 @@ float	*get_value(char *str, int *check)
 	{
 		if (str[i] == 'a' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 25;
 			value[0] += 43.31;
 			check[0] = 1;
 		}
 		else if (str[i] == 'b' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 10;
 			value[0] += 10.56;
 			check[1] = 1;
 		}
 		else if (str[i] == 'c' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 17;
 			value[0] += 23.13;
 			check[2] = 1;
 		}
 		else if (str[i] == 'd' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 15;
 			value[0] += 17.25;
 			check[3] = 1;
 		}
 		else if (str[i] == 'e' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 26;
 			value[0] += 56.88;
 			check[4] = 1;
 		}
 		else if (str[i] == 'f' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 9;
 			value[0] += 9.24;
 			check[5] = 1;
 		}
 		else if (str[i] == 'g' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 11;
 			value[0] += 12.59;
 			check[6] = 1;
 		}
 		else if (str[i] == 'h' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 12;
 			value[0] += 15.31;
 			check[7] = 1;
 		}
 		else if (str[i] == 'i' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 23;
 			value[0] += 38.45;
 			check[8] = 1;
 		}
 		else if (str[i] == 'j' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 2;
 			value[0] += 1.00;
 			check[9] = 1;
 		}
 		else if (str[i] == 'k' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 6;
 			value[0] += 5.97;
 			check[10] = 1;
 		}
 		else if (str[i] == 'l' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 18;
 			value[0] += 27.98;
 			check[11] = 1;
 		}
 		else if (str[i] == 'm' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 13;
 			value[0] += 15.36;
 			check[12] = 1;
 		}
 		else if (str[i] == 'n' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 20;
 			value[0] += 33.92;
 			check[13] = 1;
 		}
 		else if (str[i] == 'o' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 22;
 			value[0] += 36.51;
 			check[14] = 1;
 		}
 		else if (str[i] == 'p' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 14;
 			value[0] += 16.14;
 			check[15] = 1;
 		}
 		else if (str[i] == 'q' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 1;
 			value[0] += 1.00;
 			check[16] = 1;
 		}
 		else if (str[i] == 'r' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 24;
 			value[0] += 38.64;
 			check[17] = 1;
 		}
 		else if (str[i] == 's' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 19;
 			value[0] += 29.23;
 			check[18] = 1;
 		}
 		else if (str[i] == 't' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 21;
 			value[0] += 35.43;
 			check[19] = 1;
 		}
 		else if (str[i] == 'u' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 16;
 			value[0] += 18.51;
 			check[20] = 1;
 		}
 		else if (str[i] == 'v' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 5;
 			value[0] += 5.13;
 			check[21] = 1;
 		}
 		else if (str[i] == 'w' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 7;
 			value[0] += 6.57;
 			check[22] = 1;
 		}
 		else if (str[i] == 'x' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 4;
 			value[0] += 1.48;
 			check[23] = 1;
 		}
 		else if (str[i] == 'y' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 8;
 			value[0] += 9.06;
 			check[24] = 1;
 		}
 		else if (str[i] == 'z' && check[str[i] - 97] == 0)
 		{
-//			value[0] += 3;
 			value[0] += 1.39;
 			check[25] = 1;
 		}

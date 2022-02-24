@@ -1,89 +1,5 @@
 #include "wordle.h"
 
-int	ft_isalpha(int c)
-{
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
-
-void	give_indexes(t_wordle *data)
-{
-	int i = 0;
-	while (data->green_buf[i])
-	{
-		if (ft_isalpha(data->green_buf[i]))
-		{
-			++data->green;
-			data->total_green[data->num_green++] = data->green_buf[i];
-		}
-		++i;	
-	}
-	i = 0;
-	while (data->yellow_buf[i])
-	{
-		if (ft_isalpha(data->yellow_buf[i]))
-		{
-			++data->yellow;
-			data->fornow_yellow[data->num_yellow++] = data->yellow_buf[i];
-		}
-		++i;
-	}
-	i = 0;
-	while (data->black_buf[i])
-	{
-		if (ft_isalpha(data->black_buf[i]))
-		{
-			++data->black;
-		}
-		++i;
-	}
-}
-/*
-void	give_g_indexes(t_wordle *data)
-{
-	int ig = 0;
-
-	while (data->green_buf[ig])
-	{
-		if (ft_isalpha(data->green_buf[ig]))
-		{
-			++data->green;
-			data->total_green[data->num_green++] = data->green_buf[ig];
-		}
-		++ig;	
-	}
-}
-
-void	give_y_indexes(t_wordle *data)
-{
-	int iy = 0;
-
-	while (data->yellow_buf[iy])
-	{
-		if (ft_isalpha(data->yellow_buf[iy]))
-		{
-			++data->yellow;
-			data->fornow_yellow[data->num_yellow++] = data->yellow_buf[iy];
-		}
-		++iy;
-	}
-}
-
-void	give_b_indexes(t_wordle *data)
-{
-	int ib = 0;
-
-	while (data->black_buf[ib])
-	{
-		if (ft_isalpha(data->black_buf[ib]))
-		{
-			++data->black;
-		}
-		++ib;
-	}
-}
-*/
 char	**word_list(void)
 {
 	char *array[2309] = {"cigar","rebut","sissy","humph","awake",
@@ -157,7 +73,6 @@ void	print_list(char **array)
 		}
 		i++;
 	}
-	printf("counter %i\n", counter);
 	if (counter > 1)
 		printf("\n");
 	else if (counter == 0)
@@ -166,119 +81,8 @@ void	print_list(char **array)
 		exit (0);
 	}
 	else if (counter == 1)
+	{
+		printf("That is the only option left. Let's exit gracefully!\n");
 		exit (0);
-}
-
-static void	filter_yellow(char **array, char letter, int index)
-{
-	// checks if given letter is somewhere in the word
-	// if it is there BUT it is in the given index -> it is not the right word -> memset
-	// if it is not there -> memset
-	// if it is there and it is not in the given index -> we i++;
-
-	for (int i = 0; i < 2308; i++)
-	{
-		if (array[i][index] == letter)
-			memset(array[i], 0, 5);
-		else
-		{
-			int ii = 0;
-			while (array[i][ii] != '\0' && array[i][ii] != letter)
-				ii++;
-			if (ii == 5)
-				memset(array[i], 0, 5);
-		}
 	}
 }
-
-int	filter_green(char **array, char letter, int index)
-{
-	// checks if given letter is in the right place
-
-	int i;
-	int x;
-
-	x = 0;
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][index] != letter)
-			memset(array[i], 0, 5);
-	}
-	return (x);
-}
-
-void	call_filters(t_wordle *data)
-{
-	int i = 0;
-	while (data->green > 0)
-	{
-		while (data->green_buf[i] != '\0' && data->green_buf[i] == '.')
-			i++;
-		filter_green(data->arr, data->green_buf[i], i);
-		i++;
-		data->green--;
-	}
-	i = 0;
-	while (data->yellow > 0)
-	{
-		while (data->yellow_buf[i] != '\0' && data->yellow_buf[i] == '.')
-			i++;
-		filter_yellow(data->arr, data->yellow_buf[i], i);
-		i++;
-		data->yellow--;
-	}
-	black_filter(data);
-	print_list(data->arr);
-}
-
-int main(void)
-{
-	t_wordle	data;
-	int			loop = 0;
-
-	memset(&data, 0, sizeof(t_wordle));
-	data.arr = word_list();
-	while (loop < 6)
-	{
-		printf("%s\n", "any \033[0;32mGREEN\033[0m letters?, usage: <..al.>");
-		scanf("%6s", data.green_buf);
-		if (strlen(data.green_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-		printf("%s\n", "any \033[1;33mYELLOW\033[0m letters?, usage: <r....>");
-		scanf("%6s", data.yellow_buf);
-		if (strlen(data.yellow_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-		printf("%s\n", "any \033[0;30mBLACK\033[0m letters?, usage: <.o..y>");
-		scanf("%6s", data.black_buf);
-		if (strlen(data.black_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-		give_g_indexes(&data);
-		give_y_indexes(&data);
-		give_b_indexes(&data);
-	//	give_indexes(&data);
-		call_filters(&data);
-		++loop;
-	}
-	int i = 0;
-	while (data.arr[i] != NULL)
-	{
-		if (data.arr[i])
-		{
-			free(data.arr[i]);
-			data.arr[i] = NULL;
-		}
-		i++;
-	}
-	data.arr = NULL;
-	return (0);
-}
-
