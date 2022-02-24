@@ -131,7 +131,7 @@ int main(void)
 			printf("error: too long input.\n");
 			exit(1);
 		}	
-		printf("%s\n", "any \x1b[0;37mBLACK\033[0m letters?, usage: <....o>"");
+		printf("%s\n", "any \x1b[0;37mBLACK\033[0m letters?, usage: <....o>");
 		scanf("%6s", data.black_buf);
 		if (strlen(data.black_buf) > 5)
 		{
