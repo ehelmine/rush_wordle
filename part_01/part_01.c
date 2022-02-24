@@ -17,6 +17,7 @@ static int	ft_tolower(int c)
 static void	give_indexes(t_wordle *data)
 {
 	int i = 0;
+	data->green = 0;
 	while (data->green_buf[i])
 	{
 		if (ft_isalpha(data->green_buf[i]))
@@ -27,6 +28,7 @@ static void	give_indexes(t_wordle *data)
 		++i;
 	}
 	i = 0;
+	data->yellow = 0;
 	while (data->yellow_buf[i])
 	{
 		if (ft_isalpha(data->yellow_buf[i]))
@@ -37,6 +39,7 @@ static void	give_indexes(t_wordle *data)
 		++i;
 	}
 	i = 0;
+	data->black = 0;
 	while (data->black_buf[i])
 	{
 		if (ft_isalpha(data->black_buf[i]))

@@ -9,15 +9,18 @@ static void	filter_yellow(char **array, char letter, int index)
 
 	for (int i = 0; i < 2308; i++)
 	{
-		if (array[i][index] == letter)
-			memset(array[i], 0, 5);
-		else
+		if (array[i][0] != '\0')
 		{
-			int ii = 0;
-			while (array[i][ii] != '\0' && array[i][ii] != letter)
-				ii++;
-			if (ii == 5)
+			if (array[i][index] == letter)
 				memset(array[i], 0, 5);
+			else
+			{
+				int ii = 0;
+				while (array[i][ii] != '\0' && array[i][ii] != letter)
+					ii++;
+				if (ii == 5)
+					memset(array[i], 0, 5);
+			}
 		}
 	}
 }
@@ -32,8 +35,11 @@ static void	filter_green(char **array, char letter, int index)
 	x = 0;
 	for (i = 0; i < 2308; i++)
 	{
-		if (array[i][index] != letter)
-			memset(array[i], 0, 5);
+		if (array[i][0] != '\0')
+		{
+			if (array[i][index] != letter)
+				memset(array[i], 0, 5);
+		}
 	}
 }
 
@@ -44,18 +50,22 @@ void	call_filters(t_wordle *data)
 	{
 		while (data->green_buf[i] != '\0' && data->green_buf[i] == '.')
 			i++;
+		if (data->green_buf[i] == '\0')
+			break ;
 		filter_green(data->arr, data->green_buf[i], i);
-		i++;
 		data->green--;
+		i++;
 	}
 	i = 0;
 	while (data->yellow > 0)
 	{
 		while (data->yellow_buf[i] != '\0' && data->yellow_buf[i] == '.')
 			i++;
+		if (data->yellow_buf[i] == '\0')
+			break ;
 		filter_yellow(data->arr, data->yellow_buf[i], i);
-		i++;
 		data->yellow--;
+		i++;
 	}
 	black_filter(data);
 	print_list(data->arr);

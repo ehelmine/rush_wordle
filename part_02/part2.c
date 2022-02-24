@@ -7,9 +7,17 @@ static int	ft_isalpha(int c)
 	return (0);
 }
 
+static int	ft_tolower(int c)
+{
+	if (c >= 65 && c <= 90)
+		return (c + 32);
+	return (c);
+}
+
 static void	give_indexes(t_wordle *data)
 {
 	int i = 0;
+	data->green = 0;
 	while (data->green_buf[i])
 	{
 		if (ft_isalpha(data->green_buf[i]))
@@ -20,6 +28,7 @@ static void	give_indexes(t_wordle *data)
 		++i;	
 	}
 	i = 0;
+	data->yellow = 0;
 	while (data->yellow_buf[i])
 	{
 		if (ft_isalpha(data->yellow_buf[i]))
@@ -30,6 +39,7 @@ static void	give_indexes(t_wordle *data)
 		++i;
 	}
 	i = 0;
+	data->black = 0;
 	while (data->black_buf[i])
 	{
 		if (ft_isalpha(data->black_buf[i]))
@@ -137,7 +147,7 @@ int main(void)
 	char str[2];
 
 	memset(&data, 0, sizeof(t_wordle));
-	memset(str, 0, 2);
+	memset(str, 0, 1);
 	data.arr = word_list();
 	count_values(loop, &data);
 	while (loop < 5)
@@ -147,10 +157,12 @@ int main(void)
 			while (1)
 			{
 				printf("%s\n", "Do we want to continue? Type y/n\n");
-				scanf("%1s", str);
-				if (str[0] == 'n')
+				scanf("%s", str);
+				if (strlen(str) != 1)
+					continue ;
+				else if (str[0] == 'n')
 					exit (0);
-				if (str[0] == 'y')
+				else if (str[0] == 'y')
 					break ;
 				str[0] = 0;
 			}

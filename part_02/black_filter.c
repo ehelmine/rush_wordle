@@ -102,7 +102,7 @@ void	black_filter(t_wordle *data)
 			{
 				// if we didn't find the black letter in the yellow list, we come here
 				int k = 0;
-				while (data->green_buf[y] != '\0' && data->green_buf[k] != data->black_buf[i])
+				while (data->green_buf[k] != '\0' && data->green_buf[k] != data->black_buf[i])
 					k++;
 				remove_words_that_have_letter_anywhere_else_except_in_green_index(data->arr, k, data->black_buf[i], data->value_arr);
 			}
