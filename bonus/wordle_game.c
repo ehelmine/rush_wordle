@@ -1,91 +1,12 @@
-#include "wordle.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <unistd.h>
 
-int	ft_isalpha(int c)
+void	ft_putchar(char c)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
-
-void	give_g_indexes(t_wordle *data)
-{
-	int ig = 0;
-
-	while (data->green_buf[ig])
-	{
-		if (ft_isalpha(data->green_buf[ig]))
-		{
-			++data->green;
-			data->total_green[data->num_green++] = data->green_buf[ig];
-		}
-		++ig;	
-	}
-	
-
-	//for show
-/* 	printf("\n\nGREEN:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_g= %d\n", data->arr_g[f]);
-	printf("\namount_of_g_chars= %d\n", data->amount_of_g_chars);
-	printf("\nvalue of ga= %c\n", data->ga);
-	printf("value of gb= %c\n", data->gb);
-	printf("value of gc= %c\n", data->gc);
-	printf("value of gd= %c\n", data->gd);
-	printf("value of ge= %c\n", data->ge); */
-
-}
-
-void	give_y_indexes(t_wordle *data)
-{
-	int iy = 0;
-
-	while (data->yellow_buf[iy])
-	{
-		if (ft_isalpha(data->yellow_buf[iy]))
-		{
-			++data->yellow;
-			data->fornow_yellow[data->num_yellow++] = data->yellow_buf[iy];
-		}
-		++iy;
-	}
-}
-
-	//for show
-/* 	printf("\n\nYELLOW:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_y= %d\n", data->arr_y[f]);
-	printf("\namount_of_y_chars= %d\n", data->amount_of_y_chars);
-	printf("\nvalue of ya= %c\n", data->ya);
-	printf("value of yb= %c\n", data->yb);
-	printf("value of yc= %c\n", data->yc);
-	printf("value of yd= %c\n", data->yd);
-	printf("value of ye= %c\n", data->ye); */
-
-
-void	give_b_indexes(t_wordle *data)
-{
-	int ib = 0;
-
-	while (data->black_buf[ib])
-	{
-		if (ft_isalpha(data->black_buf[ib]))
-		{
-			++data->black;
-		}
-		++ib;
-	}
-
-	//for show
-/* 	printf("\n\nBLACK:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_b= %d\n", data->arr_b[f]);
-	printf("\namount_of_b_chars= %d\n", data->amount_of_b_chars);
-	printf("\nvalue of ba= %c\n", data->ba);
-	printf("value of bb= %c\n", data->bb);
-	printf("value of bc= %c\n", data->bc);
-	printf("value of bd= %c\n", data->bd);
-	printf("value of be= %c\n", data->be); */
-
+	write(1, &c, 1);
 }
 
 char	**word_list(void)
@@ -131,159 +52,58 @@ char	**word_list(void)
 	return (alloc_arr);
 }
 
-void	print_list(char **array)
+int main()
 {
-	int i;
-	int x;
+	char	answer[7];
+	char	*random;
 
-	i = 0;
-	x = 0;
-	while (array[i] != NULL)
-	{
-		if (array[i][0] != '\0')
-			printf("%s\n", array[i]);
-		i++;
-	}
-}
+	random = (char *)malloc(sizeof(char) * 7);
+	srand(time(NULL));
+	random = word_list()[rand() % 2309];
 
-void	filter_black(char **array, char letter)
-{
-	int i;
-	int ii;
+	//fow show
+	printf("%s\n", random);
 
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][0] != '\0')
-		{
-			for (ii = 0; ii < 5; ii++)
-			{
-				if (array[i][ii] == letter)
-				{
-					memset(array[i], 0, 5);
-					break ;
-				}
-			}
-		}
-	}
+ 	printf("WORDLE, guess the five letter word! (usage: write in lower case letters.)\n");
+	scanf("%s", answer);
 
-}
-
-void	filter_yellow(char **array, char letter, int index)
-{
-	// checks if given letter is somewhere in the word
-	// if it is there BUT it is in the given index -> it is not the right word -> memset
-	// if it is not there -> memset
-	// if it is there and it is not in the given index -> we i++;
-
-	for (int i = 0; i < 2308; i++)
-	{
-		if (array[i][index] == letter)
-			memset(array[i], 0, 5);
-		else
-		{
-			int ii = 0;
-			while (array[i][ii] != '\0' && array[i][ii] != letter)
-				ii++;
-			if (ii == 5)
-				memset(array[i], 0, 5);
-		}
-	}
-}
-
-int	filter_green(char **array, char letter, int index)
-{
-	// checks if given letter is in the right place
-
-	int i;
-	int x;
-
-	x = 0;
-	for (i = 0; i < 2308; i++)
-	{
-		if (array[i][index] != letter)
-			memset(array[i], 0, 5);
-	}
-	return (x);
-}
-
-void	call_filters(t_wordle *data)
-{
 	int i = 0;
-	while (data->green > 0)
+	int j = 0;
+	printf("%c", '\n');
+	while (random[j])
 	{
-		while (data->green_buf[i] != '\0' && data->green_buf[i] == '.')
+		while (answer[i])
+		{
+			if (answer[i] == random[j])
+			{
+				printf("\x1b[1m\x1b[0;32m%c\033[0m", random[j] - 32);
+			}
+			else
+			{
+				j = 0;
+				while (random[j])
+				{
+					if (answer[i] == random[j] && i != j)
+					{
+						printf("\x1b[1;33m%c\033[0m", answer[i] - 32);  //print yellow
+						break ;
+					}
+					j++;
+				}
+				if (!random[j])
+					printf("\x1b[0;30m%c\033[0m", answer[i] - 32); // print black
+						//	\x1b[1m
+					//printf("%c", answer[i]);
+				j = i;
+			}
+			//printf("%c", ' ');
 			i++;
-		filter_green(data->arr, data->green_buf[i], i);
-		i++;
-		data->green--;
+			j++;	
+		}
+	printf("%c", '\n');
+	printf("%c", '\n');
 	}
-	i = 0;
-	while (data->yellow > 0)
-	{
-		while (data->yellow_buf[i] != '\0' && data->yellow_buf[i] == '.')
-			i++;
-		filter_yellow(data->arr, data->yellow_buf[i], i);
-		i++;
-		data->yellow--;
-	}
-	black_filter(data);
-	print_list(data->arr);
+
+
+    return 0;
 }
-
-int main(void)
-{
-	t_wordle	data;
-	int loop = 0;
-
-	memset(&data, 0, sizeof(t_wordle));
-	data.arr = word_list();
-
-	while (loop < 6)
-	{
-		char	*g_question = "any \033[0;32mGREEN\033[0m letters?, usage: <..al.>";  
-
-		printf("%s\n", g_question);
-		scanf("%6s", data.green_buf);
-		if (strlen(data.green_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-		
-		char *y_question = "any \033[1;33mYELLOW\033[0m letters?, usage: <r....>";
-
-		printf("%s\n", y_question);
-		scanf("%6s", data.yellow_buf);
-		if (strlen(data.yellow_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-		
-		char	*b_question = "any \033[0;30mBLACK\033[0m letters?(no need for dots here), usage: <ey>";
-
-		printf("%s\n", b_question);
-		scanf("%6s", data.black_buf);
-		if (strlen(data.black_buf) > 5)
-		{
-			printf("error: too long input.\n");
-			exit(1);
-		}
-
-		//only for show
-		/* printf("\n\ngreen_buf=	%s\n", green_buf);
-		printf("yellow_buf=	%s\n", yellow_buf);
-		printf("black_buf=	%s\n\n\n", black_buf); */
-
-		give_g_indexes(&data);
-		give_y_indexes(&data);
-		give_b_indexes(&data);
-
-		call_filters(&data);
-		++loop;
-	}
-
-	return (0);
-}
-
-	
