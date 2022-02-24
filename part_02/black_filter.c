@@ -30,7 +30,6 @@ void	remove_words_black_letter_in_spesific_index(char **array, char letter, int 
 {
 	// remove all the words that have black letter in spesific index
 	int i;
-printf("here1\n");
 	for (i = 0; i < 2308; i++)
 	{
 		if (array[i][0] != '\0')
