@@ -7,85 +7,37 @@ int	ft_isalpha(int c)
 	return (0);
 }
 
-void	give_g_indexes(t_wordle *data)
+void	give_indexes(t_wordle *data)
 {
-	int ig = 0;
-
-	while (data->green_buf[ig])
+	int i = 0;
+	while (data->green_buf[i])
 	{
-		if (ft_isalpha(data->green_buf[ig]))
+		if (ft_isalpha(data->green_buf[i]))
 		{
 			++data->green;
-			data->total_green[data->num_green++] = data->green_buf[ig];
+			data->total_green[data->num_green++] = data->green_buf[i];
 		}
-		++ig;	
+		++i;	
 	}
-	
-
-	//for show
-/* 	printf("\n\nGREEN:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_g= %d\n", data->arr_g[f]);
-	printf("\namount_of_g_chars= %d\n", data->amount_of_g_chars);
-	printf("\nvalue of ga= %c\n", data->ga);
-	printf("value of gb= %c\n", data->gb);
-	printf("value of gc= %c\n", data->gc);
-	printf("value of gd= %c\n", data->gd);
-	printf("value of ge= %c\n", data->ge); */
-
-}
-
-void	give_y_indexes(t_wordle *data)
-{
-	int iy = 0;
-
-	while (data->yellow_buf[iy])
+	i = 0;
+	while (data->yellow_buf[i])
 	{
-		if (ft_isalpha(data->yellow_buf[iy]))
+		if (ft_isalpha(data->yellow_buf[i]))
 		{
 			++data->yellow;
-			data->fornow_yellow[data->num_yellow++] = data->yellow_buf[iy];
+			data->fornow_yellow[data->num_yellow++] = data->yellow_buf[i];
 		}
-		++iy;
+		++i;
 	}
-}
-
-	//for show
-/* 	printf("\n\nYELLOW:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_y= %d\n", data->arr_y[f]);
-	printf("\namount_of_y_chars= %d\n", data->amount_of_y_chars);
-	printf("\nvalue of ya= %c\n", data->ya);
-	printf("value of yb= %c\n", data->yb);
-	printf("value of yc= %c\n", data->yc);
-	printf("value of yd= %c\n", data->yd);
-	printf("value of ye= %c\n", data->ye); */
-
-
-void	give_b_indexes(t_wordle *data)
-{
-	int ib = 0;
-
-	while (data->black_buf[ib])
+	i = 0;
+	while (data->black_buf[i])
 	{
-		if (ft_isalpha(data->black_buf[ib]))
+		if (ft_isalpha(data->black_buf[i]))
 		{
 			++data->black;
 		}
-		++ib;
+		++i;
 	}
-
-	//for show
-/* 	printf("\n\nBLACK:\n");
-	for (int f = 0; f < 5; f++)
-		printf("arr_b= %d\n", data->arr_b[f]);
-	printf("\namount_of_b_chars= %d\n", data->amount_of_b_chars);
-	printf("\nvalue of ba= %c\n", data->ba);
-	printf("value of bb= %c\n", data->bb);
-	printf("value of bc= %c\n", data->bc);
-	printf("value of bd= %c\n", data->bd);
-	printf("value of be= %c\n", data->be); */
-
 }
 
 char	**word_list(void)
@@ -121,10 +73,20 @@ char	**word_list(void)
 	int i;
 
 	alloc_arr = (char **)malloc(sizeof(char *) * (2309));
+	if (!alloc_arr)
+	{
+		printf("Malloc fail\n");
+		exit (1);
+	}
 	i = 0;
 	while (i < 2308)
 	{
 		alloc_arr[i] = strdup(array[i]);
+		if (!alloc_arr[i])
+		{
+			printf("Malloc fail\n");
+			exit (1);
+		}
 		i++;
 	}
 	alloc_arr[i] = NULL;
@@ -135,40 +97,34 @@ void	print_list(char **array)
 {
 	int i;
 	int x;
+	int counter;
 
 	i = 0;
 	x = 0;
+	counter = 0;
 	while (array[i] != NULL)
 	{
 		if (array[i][0] != '\0')
+		{
+			if (counter == 0)
+				printf("\nOPTIONS:\n");
 			printf("%s\n", array[i]);
+			counter++;
+		}
 		i++;
 	}
-}
-
-void	filter_black(char **array, char letter)
-{
-	int i;
-	int ii;
-
-	for (i = 0; i < 2308; i++)
+	if (counter > 1)
+		printf("\n");
+	else if (counter == 0)
 	{
-		if (array[i][0] != '\0')
-		{
-			for (ii = 0; ii < 5; ii++)
-			{
-				if (array[i][ii] == letter)
-				{
-					memset(array[i], 0, 5);
-					break ;
-				}
-			}
-		}
+		printf("No options left to display, something might have gone wrong. Please try again :)\n");
+		exit (0);
 	}
-
+	else if (counter == 1)
+		exit (0);
 }
 
-void	filter_yellow(char **array, char letter, int index)
+static void	filter_yellow(char **array, char letter, int index)
 {
 	// checks if given letter is somewhere in the word
 	// if it is there BUT it is in the given index -> it is not the right word -> memset
@@ -233,56 +189,45 @@ void	call_filters(t_wordle *data)
 int main(void)
 {
 	t_wordle	data;
-	int loop = 0;
+	int			loop = 0;
 
 	memset(&data, 0, sizeof(t_wordle));
 	data.arr = word_list();
-
 	while (loop < 6)
 	{
-		char	*g_question = "any \033[0;32mGREEN\033[0m letters?, usage: <..al.>";  
-
-		printf("%s\n", g_question);
+		printf("%s\n", "any \033[0;32mGREEN\033[0m letters?, usage: <..al.>");
 		scanf("%6s", data.green_buf);
 		if (strlen(data.green_buf) > 5)
 		{
 			printf("error: too long input.\n");
 			exit(1);
-		}
-		
-		char *y_question = "any \033[1;33mYELLOW\033[0m letters?, usage: <r....>";
-
-		printf("%s\n", y_question);
+		}		
+		printf("%s\n", "any \033[1;33mYELLOW\033[0m letters?, usage: <r....>");
 		scanf("%6s", data.yellow_buf);
 		if (strlen(data.yellow_buf) > 5)
 		{
 			printf("error: too long input.\n");
 			exit(1);
-		}
-		
-		char	*b_question = "any \033[0;30mBLACK\033[0m letters?(no need for dots here), usage: <ey>";
-
-		printf("%s\n", b_question);
+		}	
+		printf("%s\n", "any \033[0;30mBLACK\033[0m letters?, usage: <.o..y>");
 		scanf("%6s", data.black_buf);
 		if (strlen(data.black_buf) > 5)
 		{
 			printf("error: too long input.\n");
 			exit(1);
 		}
-
-		//only for show
-		/* printf("\n\ngreen_buf=	%s\n", green_buf);
-		printf("yellow_buf=	%s\n", yellow_buf);
-		printf("black_buf=	%s\n\n\n", black_buf); */
-
-		give_g_indexes(&data);
-		give_y_indexes(&data);
-		give_b_indexes(&data);
-
+		give_indexes(&data);
 		call_filters(&data);
 		++loop;
 	}
-
+	int i = 0;
+	while (data.arr[i] != NULL)
+	{
+		free(data.arr[i]);
+		data.arr[i] = NULL;
+		i++;
+	}
+	data.arr = NULL;
 	return (0);
 }
 

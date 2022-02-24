@@ -5,7 +5,6 @@ void	remove_words_that_have_letter_anywhere_else_except_in_green_index(char **ar
 {
 	// remove all the words that have the letter anywhere else except in the
 	// green index
-	printf("here2\n");
 	int i;
 	int ii;
 	for (i = 0; i < 2308; i++)
